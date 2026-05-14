@@ -1653,11 +1653,13 @@
     app.classList.add('shake');
   }
 
-  const battleMapStage = document.getElementById('battleMapStage');
-  const battleMapKicker = document.getElementById('battleMapKicker');
-  const battleMapTitle = document.getElementById('battleMapTitle');
-  const battleMapSubtitle = document.getElementById('battleMapSubtitle');
-  const battleMapProvinces = document.getElementById('battleMapProvinces');
+  const battleMapUi = {
+    stage: document.getElementById('battleMapStage'),
+    kicker: document.getElementById('battleMapKicker'),
+    title: document.getElementById('battleMapTitle'),
+    subtitle: document.getElementById('battleMapSubtitle'),
+    provinces: document.getElementById('battleMapProvinces')
+  };
   let battleMapAnimationTimer = null;
 
   const battleMapConfigs = {
@@ -1804,30 +1806,30 @@
     return cluster;
   }
 
-  function updateBattleMap(screenId, { animate = false } = {}) {
-    const config = battleMapConfigs[screenId];
+  function updateBattleMap(partId, { animate = false } = {}) {
+    const config = battleMapConfigs[partId];
     if (battleMapAnimationTimer) {
       clearTimeout(battleMapAnimationTimer);
       battleMapAnimationTimer = null;
     }
-    battleMapStage.classList.remove('visible', 'transitioning');
+    battleMapUi.stage.classList.remove('visible', 'transitioning');
     if (!config) {
-      battleMapProvinces.innerHTML = '';
+      battleMapUi.provinces.innerHTML = '';
       return;
     }
 
-    battleMapKicker.textContent = config.kicker;
-    battleMapTitle.textContent = config.title;
-    battleMapSubtitle.textContent = config.subtitle;
-    battleMapProvinces.innerHTML = '';
-    config.provinces.forEach(province => battleMapProvinces.appendChild(renderProvinceCluster(province)));
+    battleMapUi.kicker.textContent = config.kicker;
+    battleMapUi.title.textContent = config.title;
+    battleMapUi.subtitle.textContent = config.subtitle;
+    battleMapUi.provinces.innerHTML = '';
+    config.provinces.forEach(province => battleMapUi.provinces.appendChild(renderProvinceCluster(province)));
 
     requestAnimationFrame(() => {
-      battleMapStage.classList.add('visible');
+      battleMapUi.stage.classList.add('visible');
       if (animate) {
-        battleMapStage.classList.add('transitioning');
+        battleMapUi.stage.classList.add('transitioning');
         battleMapAnimationTimer = setTimeout(() => {
-          battleMapStage.classList.remove('transitioning');
+          battleMapUi.stage.classList.remove('transitioning');
           battleMapAnimationTimer = null;
         }, 820);
       }
@@ -2491,7 +2493,7 @@
 
     syncPointerEffects();
     document.addEventListener('pointermove', e => {
-      if (e.pointerType !== 'mouse') return;
+      if (e.pointerType === 'touch') return;
       pointerX = e.clientX;
       pointerY = e.clientY;
       queuePointerSync();
