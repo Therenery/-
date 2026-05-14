@@ -1154,7 +1154,7 @@
 </div>
 <div class="battle-map-stage" id="battleMapStage" aria-hidden="true">
   <div class="battle-map-card">
-    <div class="battle-map-kicker" id="battleMapKicker">战役发生地</div>
+    <div class="battle-map-kicker" id="battleMapKicker"></div>
     <div class="battle-map-title" id="battleMapTitle"></div>
     <div class="battle-map-subtitle" id="battleMapSubtitle"></div>
     <div class="battle-map-provinces" id="battleMapProvinces"></div>
@@ -1772,6 +1772,12 @@
     }
   };
 
+  Object.values(battleMapConfigs).forEach(config => {
+    config.provinces.forEach(province => {
+      province.hotspotSet = new Set((province.hotspots || []).map(([col, row]) => `${col},${row}`));
+    });
+  });
+
   function renderProvinceCluster(province) {
     const cluster = document.createElement('div');
     cluster.className = 'province-cluster';
@@ -1781,14 +1787,13 @@
     cluster.style.setProperty('--rows', province.rows);
     if (province.size) cluster.dataset.size = province.size;
 
-    const hotspotSet = new Set((province.hotspots || []).map(([col, row]) => `${col},${row}`));
     province.blocks.forEach(([col, row, elev = 0]) => {
       const block = document.createElement('span');
       block.className = 'province-block';
       block.style.setProperty('--col', col);
       block.style.setProperty('--row', row);
       block.style.setProperty('--elev', elev);
-      if (hotspotSet.has(`${col},${row}`)) block.dataset.hotspot = 'true';
+      if (province.hotspotSet.has(`${col},${row}`)) block.dataset.hotspot = 'true';
       cluster.appendChild(block);
     });
 
@@ -2486,7 +2491,7 @@
 
     syncPointerEffects();
     document.addEventListener('pointermove', e => {
-      if (e.pointerType && e.pointerType !== 'mouse') return;
+      if (e.pointerType !== 'mouse') return;
       pointerX = e.clientX;
       pointerY = e.clientY;
       queuePointerSync();
