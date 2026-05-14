@@ -91,6 +91,7 @@
   .cursor-crosshair.firing { --crosshair-scale: 1.35; }
 
   .cursor-crosshair-visual {
+    position: relative;
     width: 56px;
     height: 56px;
     transform: translate(-50%, -50%) scale(var(--crosshair-scale, 1));
@@ -321,6 +322,37 @@
   @keyframes provinceBlockRise {
     0% { opacity: 0; transform: translateY(28px) scale(0.9); }
     100% { opacity: 1; transform: translateY(calc(var(--elev, 0) * -4px)) scale(1); }
+  }
+
+  @media (max-width: 1320px) {
+    .battle-map-card {
+      width: min(33vw, 400px);
+      min-width: 260px;
+      padding: 20px 18px 22px;
+    }
+
+    .province-cluster {
+      transform: scale(0.9);
+      transform-origin: top left;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .battle-map-card {
+      right: 18px;
+      top: 88px;
+      width: 240px;
+      min-width: 0;
+    }
+
+    .battle-map-provinces {
+      min-height: 210px;
+    }
+
+    .province-cluster {
+      transform: scale(0.72);
+      transform-origin: top left;
+    }
   }
 
   .impact-burst {
@@ -1242,7 +1274,7 @@
             <div class="tl-step tilt-item"><b>1949.1</b><span>三大战役胜利结束</span></div>
             <div class="tl-step tilt-item"><b>1949.4</b><span>北平和谈 → 渡江战役</span></div>
           </div>
-          <div class="highlight">主线一句话：<b>边谈边打 → 全面内战 → 战略防御 → 战略反攻 → 战略决战 → 渡江南下</b>。</div>
+          <div class="highlight">四年局势主线：<b>边谈边打 → 全面内战 → 战略防御 → 战略反攻 → 战略决战 → 渡江南下</b>。</div>
         </div>
       </div>
     </div>
@@ -1320,13 +1352,13 @@
         </div>
 
         <div class="card tilt-item">
-          <h3>这段历史的细节</h3>
+          <h3>局势演变的关节点</h3>
           <ul>
             <li><b>边谈边打：</b>《双十协定》墨迹未干，刘邓已在上党全歼阎军。</li>
             <li><b>抢运东北：</b>美军用 <b>飞机 + 军舰</b>运送国军 50 万人北上抢占战略要点。</li>
             <li><b>关键命令：</b>1945 年 9 月中央确定“<b>向北发展，向南防御</b>”——10 万干部部队挺进东北。</li>
           </ul>
-          <div class="highlight">这段冲突说明：纸面上的“和平建国”，很快便被战场上的隆隆炮声所打断。</div>
+          <div class="highlight">这些冲突表明：纸面上的“和平建国”，很快便被战场上的隆隆炮声所打断。</div>
         </div>
       </div>
     </div>
@@ -1399,12 +1431,12 @@
 
       <div class="grid-row row-2" style="flex:0.7;">
         <div class="card tilt-item">
-          <h3>关键转折</h3>
+          <h3>战局转折点</h3>
           <p>孟良崮一战最关键的地方，在于粟裕根据战场变化迅速改定目标。原计划打 7 军或 25 师，发现 74 师突出后，<b>当夜调整部署</b>，全军调头猛扑。这种因敌而变、抓住稍纵即逝战机的能力，正是华东野战军当时最锋利的作战特征。</p>
         </div>
 
         <div class="card tilt-item">
-          <h3>历史细节 · 不为人知</h3>
+          <h3>战场背后的支前力量</h3>
           <ul>
             <li>74 师覆灭后，<b>沂蒙红嫂</b>用乳汁救伤员，支前民工 92 万穿行于山路之间，抬担架、运粮弹、送补给。</li>
             <li>张灵甫死前曾向蒋介石发“<b>来生再见</b>”绝命电；蒋介石此后长期为 74 师的覆灭所震动。</li>
@@ -1490,7 +1522,7 @@
         </div>
 
         <div class="card tilt-item">
-          <h3>为什么是“转折中的转折”</h3>
+          <h3>辽沈战役的决定性意义</h3>
           <ul>
             <li>从此<b>兵力对比根本逆转</b>，决战已非可能，而是必然。</li>
             <li>国民党在东北的 5 大主力被一锅端，再无可与对抗的战略集团。</li>
@@ -1571,7 +1603,7 @@
         </div>
 
         <div class="card tilt-item">
-          <h3>尾声</h3>
+          <h3>历史收束</h3>
           <p>从重庆谈判桌上的一纸协定，到北平和谈未能挽回的崩塌，再到百万雄师横渡长江——四年之间，<b>战火重塑了中国</b>。</p>
           <div class="highlight">谈判桌上未能解决的分歧，最终在战场上分出胜负；而战场上的胜负，归根到底仍系于民心向背。<br/><b>1949 年 10 月 1 日，新中国从这片烽火中走来。</b></div>
         </div>
