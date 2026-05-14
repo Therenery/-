@@ -1,0 +1,2111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>重庆谈判到北平和谈之间的战役</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red-dark: #6a1010;
+    --red-main: #a12020;
+    --red-bright: #d4202a;
+    --gold-dark: #8a7040;
+    --gold-main: #c4a860;
+    --gold-light: #e8d8a8;
+    --bg-ink: #080604;
+    --bg-paper: #1e1a14;
+    --text-title: #f5f0e0;
+    --text-body: #d8d0c0;
+    --text-muted: #908878;
+    --border-gold: rgba(196, 168, 96, 0.45);
+    --border-red: rgba(161, 32, 32, 0.5);
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--text-body);
+    background-color: var(--bg-ink);
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(100, 20, 10, 0.25) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(120, 90, 50, 0.15) 0%, transparent 50%);
+    position: relative;
+  }
+
+  h1, h2, h3, .num, .screen-title, .title, .badge {
+    font-family: "STZhongsong", "SimSun", "Noto Serif SC", serif;
+  }
+
+  .app {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+
+  @media (pointer: fine) {
+    body, button, .card, .part-btn, .action-btn, .audio-btn, .dot, .stat, .tl-step, .tag {
+      cursor: none !important;
+    }
+  }
+
+  /* ============ POINTER / CLICK IMMERSION ============ */
+  .pointer-glow {
+    position: fixed;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 18;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255, 170, 80, 0.12) 0%, rgba(210, 70, 40, 0.08) 26%, rgba(0,0,0,0) 70%);
+    mix-blend-mode: screen;
+    opacity: 0.85;
+    filter: blur(8px);
+  }
+
+  .cursor-crosshair {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 56px;
+    height: 56px;
+    transform: translate(-50%, -50%) scale(var(--crosshair-scale, 1));
+    pointer-events: none;
+    z-index: 2001;
+    opacity: 0;
+    transition: opacity 0.18s ease, transform 0.12s ease;
+    mix-blend-mode: screen;
+  }
+
+  .cursor-crosshair.visible { opacity: 1; }
+  .cursor-crosshair.active { --crosshair-scale: 1.18; }
+  .cursor-crosshair.firing { --crosshair-scale: 1.35; }
+
+  .cursor-crosshair::before,
+  .cursor-crosshair::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 221, 165, 0.82);
+    box-shadow: 0 0 10px rgba(255, 128, 80, 0.5), inset 0 0 10px rgba(255, 180, 100, 0.22);
+  }
+
+  .cursor-crosshair::after {
+    inset: 9px;
+    border-color: rgba(255, 110, 70, 0.75);
+  }
+
+  .cursor-crosshair .cross-line {
+    position: absolute;
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255, 214, 153, 0.95), rgba(255,255,255,0.05));
+    box-shadow: 0 0 8px rgba(255, 160, 80, 0.45);
+  }
+
+  .cursor-crosshair .cross-line.h {
+    top: 50%;
+    left: 6px;
+    right: 6px;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  .cursor-crosshair .cross-line.v {
+    left: 50%;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+
+  .cursor-crosshair .center-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #fff0cc;
+    box-shadow: 0 0 8px rgba(255, 190, 100, 0.8), 0 0 16px rgba(255, 92, 52, 0.45);
+  }
+
+  .impact-burst {
+    position: fixed;
+    width: 18px;
+    height: 18px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1200;
+  }
+
+  .impact-burst::before,
+  .impact-burst::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  .impact-burst::before {
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle, rgba(255,255,220,0.95), rgba(255,160,80,0.8), rgba(255,80,40,0));
+    animation: impactPulse 0.42s ease-out forwards;
+  }
+
+  .impact-burst::after {
+    width: 26px;
+    height: 26px;
+    border: 2px solid rgba(255, 210, 140, 0.85);
+    box-shadow: 0 0 18px rgba(255, 120, 60, 0.45);
+    animation: impactRing 0.55s ease-out forwards;
+  }
+
+  .impact-spark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3px;
+    height: 20px;
+    margin-left: -1.5px;
+    transform-origin: center top;
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,175,95,0.95), rgba(255,90,45,0));
+    animation: sparkShoot 0.46s ease-out forwards;
+  }
+
+  @keyframes impactPulse {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.3); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(5.5); }
+  }
+
+  @keyframes impactRing {
+    0% { opacity: 0.95; transform: translate(-50%, -50%) scale(0.35); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(6); }
+  }
+
+  @keyframes sparkShoot {
+    0% { opacity: 1; transform: rotate(var(--spark-angle)) translateY(0) scaleY(0.4); }
+    100% { opacity: 0; transform: rotate(var(--spark-angle)) translateY(calc(-1 * var(--spark-distance))) scaleY(1.2); }
+  }
+
+  /* ============ WAR FX ============ */
+  #warCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .smoke-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+    opacity: 0.35;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(80,60,40,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(60,40,30,0.2) 0%, transparent 50%);
+    animation: smokeFloat 20s ease-in-out infinite alternate;
+  }
+
+  @keyframes smokeFloat {
+    0% { opacity: 0.25; transform: translateY(0); }
+    50% { opacity: 0.4; }
+    100% { opacity: 0.3; transform: translateY(-10px); }
+  }
+
+  .drift-smoke {
+    position: fixed;
+    pointer-events: none;
+    z-index: 6;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0;
+  }
+
+  @keyframes driftAcross {
+    0% { transform: translateX(-30vw) translateY(0) scale(0.8); opacity: 0; }
+    15% { opacity: var(--max-op, 0.45); }
+    85% { opacity: var(--max-op, 0.45); }
+    100% { transform: translateX(130vw) translateY(-40px) scale(1.4); opacity: 0; }
+  }
+
+  .fire-glow {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 120px;
+    pointer-events: none;
+    z-index: 7;
+    background: linear-gradient(transparent, rgba(180,60,20,0.08), rgba(120,30,10,0.18));
+    animation: fireFlicker 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes fireFlicker {
+    0% { opacity: 0.6; }
+    25% { opacity: 1; }
+    50% { opacity: 0.7; }
+    75% { opacity: 0.9; }
+    100% { opacity: 0.5; }
+  }
+
+  .vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 8;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(5,4,3,0.72) 100%);
+  }
+
+  .war-flash {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at var(--flash-x, 50%) var(--flash-y, 50%), rgba(255,220,130,0.6), rgba(255,120,40,0.24), transparent 48%);
+    z-index: 998;
+    pointer-events: none;
+    animation: flashBang 0.35s ease-out forwards;
+  }
+
+  @keyframes flashBang {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translate(0, 0); }
+    20% { transform: translate(-4px, 2px); }
+    40% { transform: translate(4px, -2px); }
+    60% { transform: translate(-3px, -3px); }
+    80% { transform: translate(3px, 3px); }
+  }
+
+  .shake { animation: shake 0.38s ease; }
+
+  /* ============ SCREENS ============ */
+  .screen {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 1.5vh 2.5vw;
+    display: none;
+    flex-direction: column;
+    z-index: 20;
+  }
+
+  .screen.active {
+    display: flex;
+    animation: warFadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes warFadeIn {
+    0% { opacity: 0; transform: scale(1.01); filter: brightness(1.6) blur(2px); }
+    100% { opacity: 1; transform: scale(1); filter: brightness(1) blur(0); }
+  }
+
+  /* ============ HOME ============ */
+  .home {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 2vh;
+  }
+
+  .home .line {
+    width: min(380px, 40vw);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--border-red), var(--gold-main), var(--border-red), transparent);
+    position: relative;
+  }
+
+  .home .line::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: var(--gold-dark);
+    border: 1px solid var(--gold-main);
+  }
+
+  .home h1 {
+    font-size: clamp(28px, 4.5vw, 56px);
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    color: var(--text-title);
+    text-shadow: 2px 2px 0 var(--bg-ink), 0 0 20px rgba(200, 60, 30, 0.5), 0 0 60px rgba(180, 50, 20, 0.2);
+  }
+
+  .home h2 {
+    font-size: clamp(14px, 1.8vw, 22px);
+    color: var(--gold-light);
+    font-weight: 400;
+    letter-spacing: 0.3em;
+  }
+
+  .home .subtitle {
+    color: var(--text-muted);
+    font-size: clamp(12px, 1.1vw, 14px);
+    letter-spacing: 0.15em;
+    margin-top: -0.5vh;
+  }
+
+  .btn-grid {
+    width: min(1400px, 95%);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.2vw;
+    margin-top: 1vh;
+    position: relative;
+    z-index: 25;
+  }
+
+  .part-btn, .card, .action-btn, .audio-btn, .stat, .tl-step, .tag {
+    will-change: transform;
+  }
+
+  .part-btn {
+    border: 1px solid var(--gold-main);
+    background-color: var(--bg-paper);
+    background-image: linear-gradient(145deg, rgba(40,32,24,0.66), rgba(15,12,10,0.9));
+    color: var(--text-body);
+    border-radius: 3px;
+    padding: 2.2vh 1vw;
+    min-height: 24vh;
+    cursor: pointer;
+    transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease, background-color .28s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1vh;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+  }
+
+  .part-btn::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px dashed rgba(196, 168, 96, 0.25);
+    pointer-events: none;
+  }
+
+  .part-btn::after {
+    content: "";
+    position: absolute;
+    left: -60%;
+    top: -15%;
+    width: 40%;
+    height: 160%;
+    background: linear-gradient(90deg, transparent, rgba(255, 220, 170, 0.15), transparent);
+    transform: rotate(15deg);
+    transition: left 0.6s ease;
+  }
+
+  .part-btn .edge-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--red-dark), var(--gold-dark), var(--red-dark));
+    opacity: 0.85;
+  }
+
+  .part-btn:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--red-bright);
+    background-color: #2a201a;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.75), 0 0 30px rgba(200, 50, 30, 0.35);
+  }
+
+  .part-btn:hover::after { left: 120%; }
+
+  .part-btn .num {
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 900;
+    color: var(--gold-main);
+    opacity: 0.8;
+    line-height: 1;
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.8);
+    transition: all 0.25s ease;
+  }
+
+  .part-btn:hover .num { color: var(--red-bright); transform: scale(1.1); }
+
+  .part-btn .title {
+    font-size: clamp(15px, 1.4vw, 20px);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    text-shadow: 1px 1px 2px #000;
+  }
+
+  .part-btn .desc {
+    font-size: clamp(11px, 0.85vw, 13px);
+    color: var(--text-muted);
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .home-footer {
+    margin-top: 1vh;
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+  }
+
+  .home-footer span { color: var(--red-bright); }
+
+  /* ============ CONTENT PAGES ============ */
+  .topbar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 1.2vw;
+    margin-bottom: 1.2vh;
+    border-bottom: 3px solid var(--red-main);
+    background-image: linear-gradient(90deg, rgba(100,20,15,0.25), transparent);
+    padding: 1vh 1vw;
+    position: relative;
+    border-radius: 2px;
+  }
+
+  .topbar::after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 120px;
+    height: 3px;
+    background: var(--gold-main);
+    box-shadow: 0 0 12px var(--gold-main);
+  }
+
+  .badge {
+    padding: 0.6vh 1vw;
+    background: linear-gradient(145deg, var(--red-main), var(--red-dark));
+    border: 1px solid var(--border-red);
+    font-size: clamp(11px, 0.95vw, 14px);
+    font-weight: bold;
+    color: #f5f0e0;
+    letter-spacing: 0.2em;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.6);
+    white-space: nowrap;
+  }
+
+  .screen-title {
+    font-size: clamp(18px, 2.2vw, 30px);
+    letter-spacing: 0.18em;
+    color: var(--text-title);
+    flex: 1;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  }
+
+  .date {
+    padding: 0.6vh 1vw;
+    border: 1px solid var(--border-gold);
+    background: rgba(120, 90, 50, 0.2);
+    color: var(--gold-light);
+    font-size: clamp(11px, 0.9vw, 14px);
+    font-family: monospace;
+    letter-spacing: 0.05em;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  .content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .section-intro {
+    flex-shrink: 0;
+    color: var(--gold-light);
+    line-height: 1.7;
+    font-size: clamp(12px, 1vw, 15px);
+    padding: 1vh 1.2vw;
+    background-color: rgba(30,25,18,0.82);
+    border-left: 4px solid var(--gold-main);
+    border-radius: 2px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+  }
+
+  .grid-row {
+    display: grid;
+    gap: 1.2vw;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .row-2 { grid-template-columns: 1fr 1fr; }
+  .row-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .row-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  .row-2-1 { grid-template-columns: 1.4fr 1fr; }
+
+  .card {
+    background-color: var(--bg-paper);
+    background-image: linear-gradient(rgba(30, 25, 18, 0.72), rgba(20, 16, 12, 0.94));
+    border: 1px solid rgba(196, 168, 96, 0.3);
+    padding: 1.4vh 1.2vw;
+    box-shadow: 4px 8px 16px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.03);
+    position: relative;
+    border-radius: 2px;
+    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
+    overflow: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    transform-style: preserve-3d;
+  }
+
+  .card:hover {
+    border-color: rgba(196, 168, 96, 0.7);
+    transform: translateY(-8px) scale(1.012);
+    box-shadow: 0 18px 30px rgba(0,0,0,0.68), 0 0 25px rgba(200, 85, 35, 0.14), inset 0 0 22px rgba(255,190,120,0.03);
+  }
+
+  .card::before,
+  .card::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--gold-dark);
+    border-radius: 50%;
+    box-shadow: inset 1px 1px 2px rgba(0,0,0,0.8), 0 0 4px rgba(196, 168, 96, 0.3);
+  }
+
+  .card::before { top: 7px; left: 7px; }
+  .card::after { bottom: 7px; right: 7px; }
+
+  .card h3 {
+    color: var(--gold-light);
+    font-size: clamp(14px, 1.2vw, 18px);
+    margin-bottom: 0.8vh;
+    letter-spacing: 0.12em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid rgba(196, 168, 96, 0.25);
+    padding-bottom: 0.6vh;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+
+  .card h3::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    background: var(--red-main);
+    border: 1px solid var(--border-red);
+    transform: rotate(45deg);
+  }
+
+  .card p, .card li {
+    color: var(--text-body);
+    line-height: 1.65;
+    font-size: clamp(11px, 0.95vw, 14px);
+    margin-bottom: 0.4vh;
+  }
+
+  .card ul, .card ol { padding-left: 18px; margin: 0.3vh 0; }
+  .card li::marker { color: var(--red-bright); font-weight: bold; }
+
+  .highlight {
+    margin-top: 0.6vh;
+    padding: 0.8vh 1vw;
+    border-left: 4px solid var(--red-bright);
+    background-color: rgba(100, 20, 15, 0.22);
+    color: var(--text-title);
+    line-height: 1.65;
+    font-weight: bold;
+    border-radius: 2px;
+    font-size: clamp(11px, 0.95vw, 14px);
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.6vw;
+    margin: 0.8vh 0;
+  }
+
+  .stat {
+    padding: 0.8vh 0.4vw;
+    text-align: center;
+    background-color: rgba(10, 8, 6, 0.6);
+    border: 1px solid rgba(196, 168, 96, 0.2);
+    border-top: 3px solid var(--gold-main);
+    border-radius: 2px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .stat:hover {
+    transform: translateY(-6px) scale(1.03);
+    border-color: rgba(230, 195, 120, 0.56);
+    box-shadow: 0 10px 18px rgba(0,0,0,0.45), 0 0 18px rgba(196, 120, 60, 0.18);
+  }
+
+  .stat .n {
+    font-size: clamp(16px, 1.6vw, 24px);
+    font-family: "STZhongsong", serif;
+    font-weight: 900;
+    color: var(--text-title);
+    margin-bottom: 2px;
+    text-shadow: 0 0 10px rgba(200,160,80,0.3);
+  }
+
+  .stat .t {
+    color: var(--text-muted);
+    font-size: clamp(10px, 0.75vw, 12px);
+    letter-spacing: 0.05em;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid var(--gold-main);
+    background: rgba(10, 8, 6, 0.5);
+    border-radius: 2px;
+    overflow: hidden;
+    font-size: clamp(11px, 0.85vw, 13px);
+  }
+
+  th, td {
+    padding: 0.6vh 0.6vw;
+    text-align: left;
+    border: 1px solid rgba(196, 168, 96, 0.2);
+    line-height: 1.5;
+  }
+
+  th {
+    background: rgba(120, 90, 50, 0.3);
+    color: var(--gold-light);
+    font-family: "STZhongsong", serif;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  td { color: var(--text-body); }
+  tr:nth-child(even) { background-color: rgba(30,25,18,0.3); }
+  tr:hover { background-color: rgba(100,30,20,0.12); }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: clamp(10px, 0.8vw, 12px);
+    font-weight: bold;
+    margin: 2px 6px 4px 0;
+    border: 1px solid var(--red-main);
+    background: linear-gradient(145deg, rgba(160,30,30,0.35), rgba(100,15,15,0.5));
+    color: var(--text-title);
+    border-radius: 2px;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+
+  .tag:hover {
+    transform: translateY(-3px) scale(1.04);
+    border-color: var(--gold-main);
+    box-shadow: 0 0 15px rgba(196,168,96,0.18);
+  }
+
+  .timeline {
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    margin: 0.4vh 0;
+    flex-wrap: wrap;
+  }
+
+  .tl-step {
+    flex: 1;
+    min-width: 90px;
+    padding: 0.6vh 0.4vw;
+    background: rgba(10,8,6,0.6);
+    border: 1px solid rgba(196,168,96,0.2);
+    border-left: 3px solid var(--red-main);
+    font-size: clamp(10px, 0.8vw, 12px);
+    line-height: 1.45;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .tl-step:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: rgba(196,168,96,0.4);
+    box-shadow: 0 10px 16px rgba(0,0,0,0.3), 0 0 18px rgba(196,168,96,0.08);
+  }
+
+  .tl-step b {
+    color: var(--gold-light);
+    display: block;
+    margin-bottom: 2px;
+    font-size: clamp(11px, 0.85vw, 13px);
+  }
+
+  .tl-step span { color: var(--text-muted); }
+
+  .action-bar {
+    flex-shrink: 0;
+    margin-top: 1vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 0 0.5vw;
+    z-index: 25;
+  }
+
+  .action-bar .left, .action-bar .right { display: flex; gap: 10px; }
+
+  .action-btn {
+    border: 2px solid var(--gold-main);
+    padding: 0.8vh 1.6vw;
+    font-size: clamp(12px, 1vw, 15px);
+    font-family: "STZhongsong", serif;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    background-color: var(--bg-paper);
+    background-image: linear-gradient(180deg, rgba(40,32,24,0.6), rgba(15,12,10,0.85));
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease, color 0.28s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    border-radius: 2px;
+  }
+
+  .action-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(196, 168, 96, 0.2), transparent);
+    transition: left 0.55s ease;
+  }
+
+  .action-btn:hover {
+    background-color: var(--red-dark);
+    border-color: var(--red-bright);
+    color: #fff;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(200, 50, 30, 0.36);
+  }
+
+  .action-btn:hover::before { left: 100%; }
+  .action-btn.prev { border-color: var(--gold-dark); }
+
+  .audio-controls {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 1000;
+    display: flex;
+    gap: 8px;
+  }
+
+  .audio-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--gold-dark);
+    background: rgba(30,25,18,0.92);
+    color: var(--gold-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+
+  .audio-btn:hover {
+    background: rgba(100,20,15,0.82);
+    border-color: var(--red-bright);
+    transform: translateY(-3px) scale(1.1);
+  }
+
+  .audio-btn.active {
+    border-color: var(--red-bright);
+    box-shadow: 0 0 15px rgba(200,50,30,0.45);
+    color: #ffd5a0;
+  }
+
+  .ember {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    background: #ff6030;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9;
+    box-shadow: 0 0 6px 2px rgba(255,100,30,0.6);
+    animation: emberRise linear infinite;
+  }
+
+  @keyframes emberRise {
+    0% { opacity: 1; transform: translateY(0) translateX(0) scale(1); }
+    50% { opacity: 0.8; }
+    100% { opacity: 0; transform: translateY(-100vh) translateX(40px) scale(0); }
+  }
+
+  .page-dots {
+    position: fixed;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(196, 168, 96, 0.25);
+    border: 1px solid var(--gold-dark);
+    transition: transform 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  }
+
+  .dot:hover { background: var(--gold-main); transform: scale(1.25); }
+  .dot.active {
+    background: var(--red-bright);
+    border-color: var(--red-bright);
+    box-shadow: 0 0 10px var(--red-bright);
+    transform: scale(1.35);
+  }
+
+  @media (max-width: 1100px) {
+    .btn-grid { grid-template-columns: repeat(3, 1fr); }
+    .row-3, .row-4 { grid-template-columns: 1fr 1fr; }
+    .row-2, .row-2-1 { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 700px) {
+    .btn-grid { grid-template-columns: 1fr 1fr; }
+    .row-3, .row-4 { grid-template-columns: 1fr; }
+    .screen-title { font-size: 16px; }
+    .topbar { flex-wrap: wrap; }
+    .pointer-glow, .cursor-crosshair { display: none; }
+  }
+
+  .card::-webkit-scrollbar { width: 5px; }
+  .card::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+  .card::-webkit-scrollbar-track { background: transparent; }
+</style>
+</head>
+<body>
+<canvas id="warCanvas"></canvas>
+<div class="smoke-overlay"></div>
+<div class="fire-glow"></div>
+<div class="vignette"></div>
+<div class="pointer-glow" id="pointerGlow" aria-hidden="true"></div>
+<div class="cursor-crosshair" id="crosshair" aria-hidden="true">
+  <span class="cross-line h"></span>
+  <span class="cross-line v"></span>
+  <span class="center-dot"></span>
+</div>
+<div id="emberContainer"></div>
+<div id="driftSmokeContainer"></div>
+<div class="page-dots" id="pageDots"></div>
+
+<div class="audio-controls">
+  <button class="audio-btn" id="btnMusic" onclick="toggleMusic()" title="背景战场音景" aria-label="背景战场音景">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+  </button>
+  <button class="audio-btn" id="btnSfx" onclick="toggleSfx()" title="远处战场枪炮声" aria-label="远处战场枪炮声">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+  </button>
+  <button class="audio-btn" id="btnBugle" onclick="playBugle()" title="冲锋号" aria-label="冲锋号">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h3l3-6 3 12 3-6h6"></path></svg>
+  </button>
+</div>
+
+<div class="app">
+  <section id="home" class="screen home active">
+    <div class="line"></div>
+    <h1>烽火岁月：从谈判桌到战场</h1>
+    <h2>重庆谈判与北平和谈之间的主要战役</h2>
+    <div class="subtitle">1945 · 8 — 1949 · 4　　·　　从《双十协定》到渡江令下</div>
+    <div class="line"></div>
+
+    <div class="btn-grid">
+      <button class="part-btn tilt-item" onclick="showScreen('part1')">
+        <div class="num">壹</div>
+        <div class="title">历史背景</div>
+        <div class="desc">两次谈判的脉络<br/>战与和的抉择</div>
+        <span class="edge-bar"></span>
+      </button>
+      <button class="part-btn tilt-item" onclick="showScreen('part2')">
+        <div class="num">贰</div>
+        <div class="title">战争开局</div>
+        <div class="desc">三大阶段概述<br/>1945 国共冲突</div>
+        <span class="edge-bar"></span>
+      </button>
+      <button class="part-btn tilt-item" onclick="showScreen('part3')">
+        <div class="num">叁</div>
+        <div class="title">经典战役</div>
+        <div class="desc">孟良崮战役<br/>战局中的关键一击</div>
+        <span class="edge-bar"></span>
+      </button>
+      <button class="part-btn tilt-item" onclick="showScreen('part4')">
+        <div class="num">肆</div>
+        <div class="title">战略决战</div>
+        <div class="desc">辽沈战役<br/>关门打狗于东北</div>
+        <span class="edge-bar"></span>
+      </button>
+      <button class="part-btn tilt-item" onclick="showScreen('part5')">
+        <div class="num">伍</div>
+        <div class="title">历史回响</div>
+        <div class="desc">三大战役对比<br/>终局与历史回响</div>
+        <span class="edge-bar"></span>
+      </button>
+    </div>
+
+    <div class="home-footer">
+      <span>★</span> 点击任意章节进入　|　单击页面会触发炮火反馈　|　右下角可开启战场音景 <span>★</span>
+    </div>
+  </section>
+
+  <section id="part1" class="screen">
+    <div class="topbar">
+      <span class="badge">第一部分</span>
+      <div class="screen-title">历史背景：两次谈判之间的风云</div>
+      <span class="date">1945.8 — 1949.4</span>
+    </div>
+
+    <div class="content-area">
+      <div class="section-intro">
+        抗战胜利的喜悦未及散去，硝烟便重新笼罩中国大地。不到四年间，中国从重庆谈判桌走到北平和谈，再到百万雄师渡江南下，和平的希望一步步破灭，全国格局也被彻底改写。
+      </div>
+
+      <div class="grid-row row-2">
+        <div class="card tilt-item">
+          <h3>重庆谈判 — 和平的最后一次握手</h3>
+          <p>1945 年 8 月 28 日，毛泽东在周恩来、王若飞陪同下，乘坐美国大使赫尔利的专机飞抵重庆。蒋介石在山城接连摆下三次酒宴，街头则已是国共双方的暗流涌动。</p>
+          <p>历经 <b>43 天</b>磋商，10 月 10 日双方签署《<b>政府与中共代表会谈纪要</b>》（《双十协定》），承认“和平建国基本方针”、召开政治协商会议、保障人民自由。</p>
+          <div class="highlight">然而协定回避了军队整编的关键数字、解放区政权归属、东北受降归谁等核心问题——一切尚未谈拢，国民党军队已沿铁路线大举北上。</div>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>北平和谈 — 大势已去前的最后挽回</h3>
+          <p>三大战役结束后，蒋介石被迫“引退”，李宗仁代行总统。1949 年 4 月 1 日，张治中率国民党代表团飞赴北平，与周恩来等会谈。</p>
+          <p>中共提出八项和平条件：惩办战犯、废除伪宪法、改编一切反动军队、没收官僚资本、改革土地制度、废除卖国条约……4 月 15 日《国内和平协定（最后修正案）》定稿，但南京政府拒绝签字。</p>
+          <div class="highlight">4 月 21 日凌晨，毛泽东、朱德发布《向全国进军的命令》。当日，<b>百万雄师过大江</b>，南京、上海相继解放，国民党在大陆的统治走向终结。</div>
+        </div>
+      </div>
+
+      <div class="grid-row row-2">
+        <div class="card tilt-item">
+          <h3>为什么从“谈”走向“战”</h3>
+          <ul>
+            <li><b>路线之争：</b>国民党坚持“一个党、一个领袖、一个主义”，中共主张和平民主联合政府。</li>
+            <li><b>军队问题：</b>国民党要求中共军队“国家化”——实际是缴械；中共要求按比例整编并保留独立指挥。</li>
+            <li><b>解放区归属：</b>抗战中由中共解放并建政的 19 块解放区、1 亿多人口何去何从，无法妥协。</li>
+            <li><b>受降权之争：</b>蒋介石令日伪“原地驻防、维持治安”，禁止八路军、新四军受降，矛盾立即激化。</li>
+            <li><b>外部因素：</b>美国援蒋运兵、苏联在东北的角色，使局势更加复杂难解。</li>
+          </ul>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>四年大事时间轴</h3>
+          <div class="timeline">
+            <div class="tl-step tilt-item"><b>1945.10</b><span>双十协定签订</span></div>
+            <div class="tl-step tilt-item"><b>1946.1</b><span>政协会议召开</span></div>
+            <div class="tl-step tilt-item"><b>1946.6</b><span>中原突围，全面内战爆发</span></div>
+            <div class="tl-step tilt-item"><b>1947.3</b><span>胡宗南进攻延安</span></div>
+            <div class="tl-step tilt-item"><b>1947.6</b><span>刘邓大军千里跃进大别山</span></div>
+            <div class="tl-step tilt-item"><b>1948.9</b><span>辽沈战役打响</span></div>
+            <div class="tl-step tilt-item"><b>1949.1</b><span>三大战役胜利结束</span></div>
+            <div class="tl-step tilt-item"><b>1949.4</b><span>北平和谈 → 渡江战役</span></div>
+          </div>
+          <div class="highlight">主线一句话：<b>边谈边打 → 全面内战 → 战略防御 → 战略反攻 → 战略决战 → 渡江南下</b>。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="left"><button class="action-btn prev tilt-item" onclick="showScreen('home')">◀ 返回首页</button></div>
+      <div class="right"><button class="action-btn tilt-item" onclick="showScreen('part2')">下一部分：战争开局 ▶</button></div>
+    </div>
+  </section>
+
+  <section id="part2" class="screen">
+    <div class="topbar">
+      <span class="badge">第二部分</span>
+      <div class="screen-title">战争开局：三大阶段与国共冲突</div>
+      <span class="date">1945.9 — 1948.9</span>
+    </div>
+
+    <div class="content-area">
+      <div class="section-intro">
+        从全面内战爆发到三大战役前夕，解放战争经历了“战略防御 → 战略反攻 → 战略决战”三个阶段。兵力对比从 <b>430 万 vs 127 万</b> 一路扭转为 <b>280 万 vs 290 万</b>，战场天平在炮火中悄然倾斜。
+      </div>
+
+      <div class="grid-row row-3">
+        <div class="card tilt-item">
+          <h3 style="color:var(--text-title);">① 战略防御</h3>
+          <p style="color:var(--text-muted);"><b>1946.6 — 1947.6</b>　第一年</p>
+          <ul>
+            <li>国民党出动 <b>160 万</b>正规军全面进攻解放区。</li>
+            <li>解放军采用“不计一城一地得失，集中优势兵力打歼灭战”的作战方针。</li>
+            <li>毛泽东主动撤出延安，转战陕北，“蘑菇”战术拖垮胡宗南。</li>
+            <li>主要战例：中原突围、苏中七战七捷、宿北、鲁南、莱芜、孟良崮。</li>
+          </ul>
+          <div class="highlight">第一年共歼敌 <b>112 万</b>，国民党全面进攻被粉碎。</div>
+        </div>
+
+        <div class="card tilt-item">
+          <h3 style="color:var(--gold-light);">② 战略反攻</h3>
+          <p style="color:var(--text-muted);"><b>1947.7 — 1948.8</b>　第二年</p>
+          <ul>
+            <li><b>1947.6.30 夜</b>，刘伯承、邓小平率 12 万大军强渡黄河，千里跃进大别山，把战火烧到国统区。</li>
+            <li>陈毅、粟裕出鲁西南，陈赓、谢富治挺进豫西，三军成“<b>品</b>”字阵，逐鹿中原。</li>
+            <li>战场由解放区转向国统区，“内线防御”变为“外线进攻”。</li>
+            <li>东北民主联军三下江南、四保临江，发起夏秋冬三季攻势。</li>
+          </ul>
+          <div class="highlight">“<b>蒋介石的统治从此处于人民解放军的直接威胁之下</b>。”</div>
+        </div>
+
+        <div class="card tilt-item">
+          <h3 style="color:var(--red-bright);">③ 战略决战前夜</h3>
+          <p style="color:var(--text-muted);"><b>1948.9 前</b>　兵力反超</p>
+          <ul>
+            <li>解放军总兵力达 <b>280 万</b>，野战军 149 万；装备已有大量缴获重武器。</li>
+            <li>国军被压缩在 <b>东北、华北、西北、中原、华东</b> 五大战略集团，互相孤立。</li>
+            <li>解放区连成一片，<b>3 亿人口</b>完成土地改革，兵源粮源滚滚而来。</li>
+            <li>毛泽东判断：决战时机已到——“<b>不要四五年，只要从现在起，再有三年左右</b>”。</li>
+          </ul>
+          <div class="highlight">辽沈、淮海、平津三大战役一触即发。</div>
+        </div>
+      </div>
+
+      <div class="grid-row row-2-1" style="flex:0.9;">
+        <div class="card tilt-item">
+          <h3>1945 年国共冲突 — 内战的序幕</h3>
+          <table>
+            <thead>
+              <tr><th>战役</th><th>时间</th><th>地点</th><th>过程与结果</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>上党战役</td><td>1945.9.10—10.12</td><td>山西长治</td><td>刘伯承、邓小平指挥太行、太岳部队歼灭阎锡山部 <b>3.5 万人</b>，俘第 19 军军长史泽波，为重庆谈判增添筹码。</td></tr>
+              <tr><td>津浦战役</td><td>1945.10—12</td><td>津浦路徐济段</td><td>陈毅指挥山东野战军破击津浦铁路，阻国军北上受降，歼敌 <b>2.8 万</b>。</td></tr>
+              <tr><td>邯郸战役</td><td>1945.10.24—11.2</td><td>河北邯郸</td><td>晋冀鲁豫野战军围歼第 11 战区北上之敌 <b>3 万余</b>，新八军军长高树勋率部起义，影响深远。</td></tr>
+              <tr><td>山海关阻击</td><td>1945.11.16</td><td>山海关—绥中</td><td>东北人民自治军阻击杜聿明部三个军，掩护我军在东北展开。</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>这段历史的细节</h3>
+          <ul>
+            <li><b>边谈边打：</b>《双十协定》墨迹未干，刘邓已在上党全歼阎军。</li>
+            <li><b>抢运东北：</b>美军用 <b>飞机 + 军舰</b>运送国军 50 万人北上抢占战略要点。</li>
+            <li><b>关键命令：</b>1945 年 9 月中央确定“<b>向北发展，向南防御</b>”——10 万干部部队挺进东北。</li>
+          </ul>
+          <div class="highlight">这段冲突说明：纸面上的“和平建国”，很快便被战场上的隆隆炮声所打断。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="left">
+        <button class="action-btn prev tilt-item" onclick="showScreen('home')">◀ 首页</button>
+        <button class="action-btn prev tilt-item" onclick="showScreen('part1')">◀ 上一部分</button>
+      </div>
+      <div class="right"><button class="action-btn tilt-item" onclick="showScreen('part3')">下一部分：孟良崮 ▶</button></div>
+    </div>
+  </section>
+
+  <section id="part3" class="screen">
+    <div class="topbar">
+      <span class="badge">第三部分</span>
+      <div class="screen-title">经典战役：孟良崮战役 — 百万军中取上将首级</div>
+      <span class="date">1947年5月13日 — 16日</span>
+    </div>
+
+    <div class="content-area">
+      <div class="section-intro">
+        1947 年春，国民党由“全面进攻”转为“<b>重点进攻</b>”陕北、山东。汤恩伯集团 <b>45 万</b>大军以“<b>密集靠拢、稳扎稳打</b>”压向沂蒙山区。粟裕、陈毅却在十几万敌军间发现一道缝隙——一只孤伸出来的“虎牙”：<b>整编第 74 师</b>。
+      </div>
+
+      <div class="grid-row row-3">
+        <div class="card tilt-item">
+          <h3>战前态势 · 敌我两军</h3>
+          <p><b>敌方主将：</b>张灵甫，整编 74 师中将师长，黄埔四期，号称“国军第一精锐”。</p>
+          <ul>
+            <li>整编 74 师 = 原 74 军，<b>3 万 2 千人</b>，全美械装备。</li>
+            <li>4 个整编师集团靠拢推进，74 师居中突出。</li>
+            <li>蒋介石以 74 师为饵，企图诱我决战。</li>
+          </ul>
+          <p style="margin-top:0.5vh;"><b>我方主将：</b>陈毅（司令）、粟裕（副司令兼参谋长）。</p>
+          <ul>
+            <li>华东野战军 9 个纵队，约 <b>27 万人</b>。</li>
+            <li>采用“<b>百万军中取上将首级</b>”的中央突破战法。</li>
+          </ul>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>战役经过 · 三天三夜</h3>
+          <div class="timeline" style="flex-direction:column;">
+            <div class="tl-step tilt-item"><b>5.13 黄昏</b><span>1、8 纵向 74 师两翼穿插，切断与友邻整编 25、83 师联系。</span></div>
+            <div class="tl-step tilt-item"><b>5.14</b><span>74 师退守孟良崮山地，凭险固守。山上缺水缺粮，重武器难以充分发挥。</span></div>
+            <div class="tl-step tilt-item"><b>5.15</b><span>4、6、9 纵昼夜强攻；外围 10 个整编师拼死增援，距山头仅 5 公里。</span></div>
+            <div class="tl-step tilt-item"><b>5.16 17:00</b><span>红旗插上孟良崮主峰 540 高地，张灵甫毙命于山洞内，74 师全部就歼。</span></div>
+          </div>
+          <div class="highlight">一战创下“<b>万军之中取敌酋首级</b>”的经典范例，蒋介石哀叹“<b>最为痛心</b>”。</div>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>战役成果与意义</h3>
+          <div class="stat-row">
+            <div class="stat tilt-item"><div class="n">3.2万</div><div class="t">全歼整编74师</div></div>
+            <div class="stat tilt-item"><div class="n">3天</div><div class="t">激战时长</div></div>
+            <div class="stat tilt-item"><div class="n">5公里</div><div class="t">援敌最近距离</div></div>
+            <div class="stat tilt-item"><div class="n">12000</div><div class="t">我军伤亡</div></div>
+          </div>
+          <ul>
+            <li><b>军事上：</b>歼灭“五大主力”之首，打破重点进攻锐气。</li>
+            <li><b>战术上：</b>展示了集中绝对优势兵力、近迫作业、白刃突击的能力。</li>
+            <li><b>政治上：</b>极大鼓舞解放区军民信心，山东战场转危为安。</li>
+            <li><b>战略上：</b>为之后挺进大别山、转入战略反攻铺平道路。</li>
+          </ul>
+          <div class="highlight">陈毅赋诗：“<b>孟良崮上鬼神号，七十四师无地逃。</b>”</div>
+        </div>
+      </div>
+
+      <div class="grid-row row-2" style="flex:0.7;">
+        <div class="card tilt-item">
+          <h3>关键转折</h3>
+          <p>孟良崮一战最关键的地方，在于粟裕根据战场变化迅速改定目标。原计划打 7 军或 25 师，发现 74 师突出后，<b>当夜调整部署</b>，全军调头猛扑。这种因敌而变、抓住稍纵即逝战机的能力，正是华东野战军当时最锋利的作战特征。</p>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>历史细节 · 不为人知</h3>
+          <ul>
+            <li>74 师覆灭后，<b>沂蒙红嫂</b>用乳汁救伤员，支前民工 92 万穿行于山路之间，抬担架、运粮弹、送补给。</li>
+            <li>张灵甫死前曾向蒋介石发“<b>来生再见</b>”绝命电；蒋介石此后长期为 74 师的覆灭所震动。</li>
+            <li>缴获美式火炮 <b>700 余门</b>，成为后续战役中重要的火力来源。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="left">
+        <button class="action-btn prev tilt-item" onclick="showScreen('home')">◀ 首页</button>
+        <button class="action-btn prev tilt-item" onclick="showScreen('part2')">◀ 上一部分</button>
+      </div>
+      <div class="right"><button class="action-btn tilt-item" onclick="showScreen('part4')">下一部分：辽沈战役 ▶</button></div>
+    </div>
+  </section>
+
+  <section id="part4" class="screen">
+    <div class="topbar">
+      <span class="badge">第四部分</span>
+      <div class="screen-title">战略决战：辽沈战役 — 关门打狗，定乾坤于东北</div>
+      <span class="date">1948年9月12日 — 11月2日</span>
+    </div>
+
+    <div class="content-area">
+      <div class="section-intro">
+        东北是当时中国唯一具有完整重工业体系的战略区，也是国军兵力最集中的方向。<b>52 天</b>激战，林彪、罗荣桓指挥东北野战军 <b>103 万</b>，对国军 <b>55 万</b>重兵集团完成围歼，夺取了战略决战的开门红。
+      </div>
+
+      <div class="grid-row row-3">
+        <div class="card tilt-item">
+          <h3>战前态势 · 决心“打锦州”</h3>
+          <ul>
+            <li>东北国军被分割于 <b>沈阳、长春、锦州</b>三个孤立据点。</li>
+            <li>毛泽东与林彪反复电报往来，最终拍板：<b>先打锦州，关门打狗</b>。</li>
+            <li>“<b>锦州一破，整个东北就成了瓮中之鳖</b>。”</li>
+          </ul>
+          <p><b>双方主将：</b></p>
+          <ul>
+            <li>东北野战军：林彪、罗荣桓、刘亚楼。</li>
+            <li>国军东北“剿总”：卫立煌；锦州范汉杰，长春郑洞国，西进兵团廖耀湘。</li>
+          </ul>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>关键四战</h3>
+          <div style="margin:0.4vh 0;">
+            <span class="tag tilt-item">锦州攻坚</span>
+            <span class="tag tilt-item">塔山阻击</span>
+            <span class="tag tilt-item">黑山阻击</span>
+            <span class="tag tilt-item">辽西围歼</span>
+          </div>
+          <div class="timeline" style="flex-direction:column;">
+            <div class="tl-step tilt-item"><b>锦州攻坚（10.14）</b><span>31 小时破城，歼范汉杰 <b>10 万</b>，东北国军南撤之门彻底关闭。</span></div>
+            <div class="tl-step tilt-item"><b>塔山阻击（10.10—15）</b><span>4 纵以 8 个团死守塔山阵地，顶住侯镜如东进兵团 <b>11 个师</b>轮番猛攻 6 昼夜。</span></div>
+            <div class="tl-step tilt-item"><b>长春和平解放（10.19）</b><span>困城已 5 月，曾泽生率 60 军起义，郑洞国率残部投诚。</span></div>
+            <div class="tl-step tilt-item"><b>辽西围歼（10.26—28）</b><span>合围廖耀湘 5 个军 12 万人于黑山、大虎山地区，48 小时全歼。</span></div>
+          </div>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>战役成果</h3>
+          <div class="stat-row">
+            <div class="stat tilt-item"><div class="n">47.2万</div><div class="t">歼敌总数</div></div>
+            <div class="stat tilt-item"><div class="n">52天</div><div class="t">战役历时</div></div>
+            <div class="stat tilt-item"><div class="n">103万</div><div class="t">解放军兵力</div></div>
+            <div class="stat tilt-item"><div class="n">东北全境</div><div class="t">基本解放</div></div>
+          </div>
+          <ul>
+            <li>解放军总数首次<b>超过</b>国民党军（300 万 vs 290 万）。</li>
+            <li>东北成为最稳固的战略后方与<b>工业兵工基地</b>。</li>
+            <li>“东北野战军”百万雄师即将<b>挥师入关</b>，发起平津战役。</li>
+          </ul>
+          <div class="highlight">毛泽东判断：<b>原来预计五年左右，现在只需要一年左右，就可能从根本上打倒国民党。</b></div>
+        </div>
+      </div>
+
+      <div class="grid-row row-2" style="flex:0.7;">
+        <div class="card tilt-item">
+          <h3>战场细节 · 塔山六昼夜</h3>
+          <p>塔山只是辽西走廊上的一个小村，却成为“<b>用尸山换出的胜利</b>”的地方。4 纵 28 团 1 营 3 连战至最后一人仍守住阵地；战后被授予“<b>塔山英雄团</b>”称号。<b>“没有塔山，就没有锦州。”</b> 这是辽沈战役最常被提起的一句战场注脚。</p>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>为什么是“转折中的转折”</h3>
+          <ul>
+            <li>从此<b>兵力对比根本逆转</b>，决战已非可能，而是必然。</li>
+            <li>国民党在东北的 5 大主力被一锅端，再无可与对抗的战略集团。</li>
+            <li>东北稳固之后，“<b>四野</b>”挥师南下，从此一路势如破竹。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="left">
+        <button class="action-btn prev tilt-item" onclick="showScreen('home')">◀ 首页</button>
+        <button class="action-btn prev tilt-item" onclick="showScreen('part3')">◀ 上一部分</button>
+      </div>
+      <div class="right"><button class="action-btn tilt-item" onclick="showScreen('part5')">下一部分：历史回响 ▶</button></div>
+    </div>
+  </section>
+
+  <section id="part5" class="screen">
+    <div class="topbar">
+      <span class="badge">终　局</span>
+      <div class="screen-title">历史回响：三大战役对比与终局</div>
+      <span class="date">1948.9 — 1949.4</span>
+    </div>
+
+    <div class="content-area">
+      <div class="grid-row row-2-1" style="flex:1.2;">
+        <div class="card tilt-item">
+          <h3>三大战役全景对比</h3>
+          <table>
+            <thead>
+              <tr><th>项目</th><th style="color:#ffd5a0;">辽沈战役</th><th style="color:#ffd5a0;">淮海战役</th><th style="color:#ffd5a0;">平津战役</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><b>时间</b></td><td>1948.9.12—11.2</td><td>1948.11.6—1949.1.10</td><td>1948.11.29—1949.1.31</td></tr>
+              <tr><td><b>指挥</b></td><td>林彪 罗荣桓 刘亚楼</td><td>邓小平 刘伯承 陈毅 粟裕 谭震林</td><td>林彪 罗荣桓 聂荣臻</td></tr>
+              <tr><td><b>参战兵力</b></td><td>东野 103 万</td><td>中野+华野 60 万</td><td>东野+华北 100 万</td></tr>
+              <tr><td><b>主要作战</b></td><td>锦州、塔山、辽西</td><td>碾庄、双堆集、陈官庄</td><td>新保安、张家口、天津、北平</td></tr>
+              <tr><td><b>核心战法</b></td><td>关门打狗</td><td>中间突破，分割围歼</td><td>先打两头，后取中间</td></tr>
+              <tr><td><b>歼敌数</b></td><td><b>47.2 万</b></td><td><b>55.5 万</b></td><td><b>52.1 万</b></td></tr>
+              <tr><td><b>战略意义</b></td><td>解放东北全境<br/>兵力对比逆转</td><td>解放长江以北中下游<br/>摧毁国军精锐</td><td>解放华北全境<br/>北平和平解放</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>支前的力量 · 人民的胜利</h3>
+          <div class="stat-row">
+            <div class="stat tilt-item"><div class="n">543万</div><div class="t">支前民工</div></div>
+            <div class="stat tilt-item"><div class="n">88万</div><div class="t">担架</div></div>
+            <div class="stat tilt-item"><div class="n">30.5万</div><div class="t">大小车</div></div>
+            <div class="stat tilt-item"><div class="n">9.6亿斤</div><div class="t">粮食</div></div>
+          </div>
+          <p style="margin-top:0.6vh;">陈毅元帅说：“<b>淮海战役的胜利，是人民群众用小车推出来的。</b>” 三大战役的胜利，不只是 200 万解放军的胜利，更是身后 <b>3 亿翻身农民</b>的胜利。</p>
+          <div class="highlight">民心向背，往往决定战争的最后走向。这也是这段历史留给后人的深刻回响。</div>
+        </div>
+      </div>
+
+      <div class="grid-row row-3" style="flex:0.9;">
+        <div class="card tilt-item">
+          <h3>历史意义</h3>
+          <ul>
+            <li>三大战役共歼灭和改编国军 <b>154 万余人</b>。</li>
+            <li>国民党赖以统治的<b>主要军事力量</b>被基本摧毁。</li>
+            <li>长江以北<b>全境解放</b>，新中国诞生已成定局。</li>
+            <li>北平和谈破裂后，<b>渡江战役</b>一举攻克南京，国民政府在大陆的统治走向终结。</li>
+          </ul>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>胜负的深层原因</h3>
+          <ul>
+            <li><b>政治：</b>共产党代表绝大多数人民利益，土地改革赢得农民支持。</li>
+            <li><b>军事：</b>集中优势兵力、运动战与人民战争相结合，形成持续优势。</li>
+            <li><b>经济：</b>国统区恶性通胀、官僚腐败，民心尽失。</li>
+            <li><b>组织：</b>党指挥枪、纪律严明、指挥统一，形成更稳定的动员与执行体系。</li>
+          </ul>
+        </div>
+
+        <div class="card tilt-item">
+          <h3>尾声</h3>
+          <p>从重庆谈判桌上的一纸协定，到北平和谈未能挽回的崩塌，再到百万雄师横渡长江——四年之间，<b>战火重塑了中国</b>。</p>
+          <div class="highlight">谈判桌上未能解决的分歧，最终在战场上分出胜负；而战场上的胜负，归根到底仍系于民心向背。<br/><b>1949 年 10 月 1 日，新中国从这片烽火中走来。</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <div class="left">
+        <button class="action-btn prev tilt-item" onclick="showScreen('home')">◀ 返回首页</button>
+        <button class="action-btn prev tilt-item" onclick="showScreen('part4')">◀ 上一部分</button>
+      </div>
+      <div class="right"><button class="action-btn tilt-item" onclick="showScreen('home')">★ 完成 · 返回首页 ★</button></div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const screenIds = ['home', 'part1', 'part2', 'part3', 'part4', 'part5'];
+  let currentScreen = 'home';
+
+  function buildDots() {
+    const dotsBox = document.getElementById('pageDots');
+    dotsBox.innerHTML = '';
+    screenIds.forEach((id, index) => {
+      const d = document.createElement('div');
+      d.className = 'dot' + (id === currentScreen ? ' active' : '');
+      d.title = id === 'home' ? '首页' : '第 ' + index + ' 部分';
+      d.onclick = () => showScreen(id);
+      dotsBox.appendChild(d);
+    });
+  }
+
+  function triggerFlash(x = window.innerWidth / 2, y = window.innerHeight / 2, strength = 1) {
+    const flash = document.createElement('div');
+    flash.className = 'war-flash';
+    flash.style.setProperty('--flash-x', `${(x / window.innerWidth) * 100}%`);
+    flash.style.setProperty('--flash-y', `${(y / window.innerHeight) * 100}%`);
+    flash.style.opacity = String(0.35 + strength * 0.35);
+    document.body.appendChild(flash);
+    setTimeout(() => flash.remove(), 380);
+  }
+
+  function triggerAppShake() {
+    const app = document.querySelector('.app');
+    app.classList.remove('shake');
+    void app.offsetWidth;
+    app.classList.add('shake');
+  }
+
+  function showScreen(id, options = {}) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
+    currentScreen = id;
+    buildDots();
+    triggerFlash(window.innerWidth / 2, window.innerHeight * 0.42, 0.7);
+    triggerAppShake();
+    if (options.keyboard) playClickBlast(0.6);
+  }
+
+  buildDots();
+
+  document.addEventListener('keydown', e => {
+    const idx = screenIds.indexOf(currentScreen);
+    if (e.key === 'ArrowRight' && idx < screenIds.length - 1) {
+      showScreen(screenIds[idx + 1], { keyboard: true });
+    } else if (e.key === 'ArrowLeft' && idx > 0) {
+      showScreen(screenIds[idx - 1], { keyboard: true });
+    } else if (e.key === 'Home') {
+      showScreen('home', { keyboard: true });
+    }
+  });
+
+  /* ============ AUDIO ENGINE ============ */
+  let audioCtx = null;
+  let musicEnabled = false;
+  let sfxEnabled = false;
+  let ambientNodes = null;
+  let musicLayerInterval = null;
+  let sfxInterval = null;
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function createNoiseBuffer(duration = 0.7) {
+    const ctx = getAudioCtx();
+    const size = Math.max(1, Math.floor(ctx.sampleRate * duration));
+    const buffer = ctx.createBuffer(1, size, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < size; i++) {
+      data[i] = (Math.random() * 2 - 1) * (1 - i / size);
+    }
+    return buffer;
+  }
+
+  function startMusic() {
+    const ctx = getAudioCtx();
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const osc3 = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+
+    osc1.type = 'sawtooth'; osc1.frequency.value = 55;
+    osc2.type = 'sine'; osc2.frequency.value = 82;
+    osc3.type = 'sine'; osc3.frequency.value = 41;
+
+    lfo.frequency.value = 0.08;
+    lfoGain.gain.value = 60;
+    lfo.connect(lfoGain);
+
+    filter.type = 'lowpass';
+    filter.frequency.value = 180;
+    lfoGain.connect(filter.frequency);
+
+    gain.gain.value = 0.055;
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    osc3.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc1.start();
+    osc2.start();
+    osc3.start();
+    lfo.start();
+
+    ambientNodes = { osc1, osc2, osc3, lfo };
+
+    musicLayerInterval = setInterval(() => {
+      const r = Math.random();
+      if (r < 0.38) playCannon(0.45);
+      else if (r < 0.72) playDistantExplosion(0.35);
+      else if (r < 0.9) playDistantBurst(0.35);
+      else playBugle(true);
+    }, 3300 + Math.random() * 4200);
+  }
+
+  function stopMusic() {
+    if (ambientNodes) {
+      try {
+        ambientNodes.osc1.stop();
+        ambientNodes.osc2.stop();
+        ambientNodes.osc3.stop();
+        ambientNodes.lfo.stop();
+      } catch (e) {}
+      ambientNodes = null;
+    }
+    if (musicLayerInterval) {
+      clearInterval(musicLayerInterval);
+      musicLayerInterval = null;
+    }
+  }
+
+  function toggleMusic() {
+    musicEnabled = !musicEnabled;
+    const btn = document.getElementById('btnMusic');
+    if (musicEnabled) {
+      btn.classList.add('active');
+      startMusic();
+    } else {
+      btn.classList.remove('active');
+      stopMusic();
+    }
+  }
+
+  function playDistantGunshot(level = 1) {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const src = ctx.createBufferSource();
+    src.buffer = createNoiseBuffer(0.24);
+
+    const filt = ctx.createBiquadFilter();
+    filt.type = 'lowpass';
+    filt.frequency.value = 420 + Math.random() * 550;
+
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.18 * level, now);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+
+    src.connect(filt);
+    filt.connect(g);
+    g.connect(ctx.destination);
+    src.start(now);
+  }
+
+  function playDistantBurst(level = 1) {
+    const shots = 3 + Math.floor(Math.random() * 5);
+    let off = 0;
+    for (let i = 0; i < shots; i++) {
+      setTimeout(() => playDistantGunshot(level), off);
+      off += 70 + Math.random() * 70;
+    }
+  }
+
+  function playDistantExplosion(level = 1) {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    const og = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(58, now);
+    osc.frequency.exponentialRampToValueAtTime(18, now + 0.85);
+    og.gain.setValueAtTime(0.24 * level, now);
+    og.gain.exponentialRampToValueAtTime(0.0001, now + 1.2);
+    osc.connect(og);
+    og.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 1.2);
+
+    const ns = ctx.createBufferSource();
+    ns.buffer = createNoiseBuffer(0.95);
+    const nf = ctx.createBiquadFilter();
+    const ng = ctx.createGain();
+    nf.type = 'lowpass';
+    nf.frequency.value = 280;
+    ng.gain.setValueAtTime(0.18 * level, now);
+    ng.gain.exponentialRampToValueAtTime(0.0001, now + 1.0);
+    ns.connect(nf);
+    nf.connect(ng);
+    ng.connect(ctx.destination);
+    ns.start(now);
+  }
+
+  function playCannon(level = 1) {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+    const o1 = ctx.createOscillator();
+    const g1 = ctx.createGain();
+
+    o1.type = 'triangle';
+    o1.frequency.setValueAtTime(140, now);
+    o1.frequency.exponentialRampToValueAtTime(28, now + 0.28);
+    g1.gain.setValueAtTime(0.001, now);
+    g1.gain.exponentialRampToValueAtTime(0.32 * level, now + 0.01);
+    g1.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+    o1.connect(g1);
+    g1.connect(ctx.destination);
+    o1.start(now);
+    o1.stop(now + 0.56);
+
+    setTimeout(() => playDistantExplosion(0.9 * level), 65);
+  }
+
+  function playClickBlast(level = 1) {
+    const ctx = getAudioCtx();
+    const now = ctx.currentTime;
+
+    const boom = ctx.createOscillator();
+    const boomGain = ctx.createGain();
+    boom.type = 'triangle';
+    boom.frequency.setValueAtTime(190, now);
+    boom.frequency.exponentialRampToValueAtTime(34, now + 0.26);
+    boomGain.gain.setValueAtTime(0.001, now);
+    boomGain.gain.exponentialRampToValueAtTime(0.52 * level, now + 0.008);
+    boomGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.62);
+    boom.connect(boomGain);
+    boomGain.connect(ctx.destination);
+    boom.start(now);
+    boom.stop(now + 0.65);
+
+    const crack = ctx.createBufferSource();
+    crack.buffer = createNoiseBuffer(0.5);
+    const hp = ctx.createBiquadFilter();
+    const lp = ctx.createBiquadFilter();
+    const crackGain = ctx.createGain();
+    hp.type = 'highpass';
+    hp.frequency.value = 180;
+    lp.type = 'lowpass';
+    lp.frequency.value = 1200;
+    crackGain.gain.setValueAtTime(0.34 * level, now);
+    crackGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+    crack.connect(hp);
+    hp.connect(lp);
+    lp.connect(crackGain);
+    crackGain.connect(ctx.destination);
+    crack.start(now);
+
+    const tail = ctx.createOscillator();
+    const tailGain = ctx.createGain();
+    tail.type = 'sine';
+    tail.frequency.setValueAtTime(75, now + 0.06);
+    tail.frequency.exponentialRampToValueAtTime(20, now + 0.95);
+    tailGain.gain.setValueAtTime(0.001, now + 0.06);
+    tailGain.gain.exponentialRampToValueAtTime(0.22 * level, now + 0.1);
+    tailGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.95);
+    tail.connect(tailGain);
+    tailGain.connect(ctx.destination);
+    tail.start(now + 0.06);
+    tail.stop(now + 0.96);
+  }
+
+  function playBugle(distant = false) {
+    const ctx = getAudioCtx();
+    const notes = [
+      { f: 392, d: 0.18 },
+      { f: 392, d: 0.18 },
+      { f: 392, d: 0.18 },
+      { f: 523, d: 0.3 },
+      { f: 392, d: 0.2 },
+      { f: 523, d: 0.25 },
+      { f: 659, d: 0.55 }
+    ];
+
+    let t = ctx.currentTime + 0.05;
+    const baseGain = distant ? 0.06 : 0.18;
+
+    notes.forEach(n => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filt = ctx.createBiquadFilter();
+      const vib = ctx.createOscillator();
+      const vibGain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(n.f, t);
+
+      filt.type = 'bandpass';
+      filt.frequency.value = n.f * 2;
+      filt.Q.value = distant ? 8 : 4;
+
+      vib.frequency.value = 5;
+      vibGain.gain.value = n.f * 0.01;
+      vib.connect(vibGain);
+      vibGain.connect(osc.frequency);
+
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(baseGain, t + 0.04);
+      gain.gain.setValueAtTime(baseGain, t + n.d - 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + n.d);
+
+      if (distant) {
+        const lp = ctx.createBiquadFilter();
+        lp.type = 'lowpass';
+        lp.frequency.value = 850;
+        osc.connect(filt);
+        filt.connect(lp);
+        lp.connect(gain);
+      } else {
+        osc.connect(filt);
+        filt.connect(gain);
+      }
+
+      gain.connect(ctx.destination);
+      vib.start(t);
+      osc.start(t);
+      osc.stop(t + n.d + 0.02);
+      vib.stop(t + n.d + 0.02);
+      t += n.d + 0.03;
+    });
+  }
+
+  function toggleSfx() {
+    sfxEnabled = !sfxEnabled;
+    const btn = document.getElementById('btnSfx');
+    if (sfxEnabled) {
+      btn.classList.add('active');
+      sfxInterval = setInterval(() => {
+        const r = Math.random();
+        if (r < 0.32) playDistantGunshot(0.9);
+        else if (r < 0.58) playDistantBurst(0.7);
+        else if (r < 0.82) playDistantExplosion(0.55);
+        else playCannon(0.65);
+      }, 1000 + Math.random() * 2600);
+    } else {
+      btn.classList.remove('active');
+      if (sfxInterval) {
+        clearInterval(sfxInterval);
+        sfxInterval = null;
+      }
+    }
+  }
+
+  /* ============ CANVAS FX ============ */
+  const canvas = document.getElementById('warCanvas');
+  const ctx2d = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  let bullets = [];
+  let sparks = [];
+  let smokeP = [];
+  let fireP = [];
+  let frameCount = 0;
+
+  class Bullet {
+    constructor() { this.reset(); }
+
+    reset() {
+      const side = Math.floor(Math.random() * 2);
+      const speed = 35 + Math.random() * 25;
+      const yBase = Math.random() * canvas.height * 0.7 + canvas.height * 0.15;
+      if (side === 0) {
+        this.x = -20;
+        this.y = yBase;
+        const ang = Math.random() * 0.3 - 0.15;
+        this.vx = Math.cos(ang) * speed;
+        this.vy = Math.sin(ang) * speed;
+      } else {
+        this.x = canvas.width + 20;
+        this.y = yBase;
+        const ang = Math.PI + (Math.random() * 0.3 - 0.15);
+        this.vx = Math.cos(ang) * speed;
+        this.vy = Math.sin(ang) * speed;
+      }
+      this.life = 1;
+      this.decay = 0.012 + Math.random() * 0.008;
+      this.length = 90 + Math.random() * 80;
+      this.brightness = 0.7 + Math.random() * 0.3;
+      this.color = Math.random() < 0.7
+        ? { r: 255, g: 200, b: 80 }
+        : { r: 255, g: 100, b: 60 };
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.life -= this.decay;
+      if (this.x < -100 || this.x > canvas.width + 100 || this.life <= 0) this.reset();
+    }
+
+    draw(c) {
+      const alpha = this.life * this.brightness;
+      const speedMag = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+      const tailX = this.x - (this.vx / speedMag) * this.length;
+      const tailY = this.y - (this.vy / speedMag) * this.length;
+
+      const glow = c.createLinearGradient(tailX, tailY, this.x, this.y);
+      glow.addColorStop(0, `rgba(${this.color.r},${this.color.g},${this.color.b},0)`);
+      glow.addColorStop(0.6, `rgba(${this.color.r},${this.color.g},${this.color.b},${alpha * 0.3})`);
+      glow.addColorStop(1, `rgba(255,255,220,${alpha * 0.7})`);
+      c.beginPath();
+      c.moveTo(tailX, tailY);
+      c.lineTo(this.x, this.y);
+      c.strokeStyle = glow;
+      c.lineWidth = 4;
+      c.stroke();
+
+      const core = c.createLinearGradient(tailX, tailY, this.x, this.y);
+      core.addColorStop(0, `rgba(255,255,200,0)`);
+      core.addColorStop(0.8, `rgba(255,240,180,${alpha})`);
+      core.addColorStop(1, `rgba(255,255,255,${alpha})`);
+      c.beginPath();
+      c.moveTo(tailX, tailY);
+      c.lineTo(this.x, this.y);
+      c.strokeStyle = core;
+      c.lineWidth = 1.5;
+      c.stroke();
+
+      c.beginPath();
+      c.arc(this.x, this.y, 3, 0, Math.PI * 2);
+      c.fillStyle = `rgba(255,255,240,${alpha})`;
+      c.shadowColor = `rgba(255,200,80,${alpha})`;
+      c.shadowBlur = 10;
+      c.fill();
+      c.shadowBlur = 0;
+    }
+  }
+
+  class Spark {
+    constructor(x, y, power = 1) {
+      this.x = x ?? Math.random() * canvas.width;
+      this.y = y ?? canvas.height;
+      this.vx = (Math.random() - 0.5) * 6 * power;
+      this.vy = -(1 + Math.random() * 4 * power);
+      this.life = 1;
+      this.decay = 0.012 + Math.random() * 0.025;
+      this.size = 1 + Math.random() * 3;
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vy += 0.05;
+      this.vx += (Math.random() - 0.5) * 0.25;
+      this.life -= this.decay;
+    }
+
+    draw(c) {
+      if (this.life <= 0) return;
+      const r = 255;
+      const g = Math.floor(80 + this.life * 120);
+      const b = Math.floor(this.life * 30);
+      c.beginPath();
+      c.arc(this.x, this.y, this.size * this.life, 0, Math.PI * 2);
+      c.fillStyle = `rgba(${r},${g},${b},${this.life * 0.85})`;
+      c.fill();
+    }
+  }
+
+  class Smoke {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = canvas.height + 20;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = -(0.3 + Math.random() * 0.5);
+      this.life = 1;
+      this.decay = 0.002 + Math.random() * 0.003;
+      this.size = 20 + Math.random() * 60;
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vx += (Math.random() - 0.5) * 0.1;
+      this.life -= this.decay;
+      this.size += 0.3;
+    }
+
+    draw(c) {
+      if (this.life <= 0) return;
+      const a = this.life * 0.06;
+      c.beginPath();
+      c.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      c.fillStyle = `rgba(60,50,40,${a})`;
+      c.fill();
+    }
+  }
+
+  class Fire {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = canvas.height - Math.random() * 30;
+      this.vx = Math.random() - 0.5;
+      this.vy = -(1 + Math.random() * 2);
+      this.life = 1;
+      this.decay = 0.015 + Math.random() * 0.02;
+      this.size = 3 + Math.random() * 8;
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      this.vx += (Math.random() - 0.5) * 0.2;
+      this.life -= this.decay;
+      this.size *= 0.99;
+    }
+
+    draw(c) {
+      if (this.life <= 0) return;
+      const a = this.life * 0.15;
+      const r = 255;
+      const g = Math.floor(60 + this.life * 100);
+      const b = Math.floor(this.life * 20);
+      c.beginPath();
+      c.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      c.fillStyle = `rgba(${r},${g},${b},${a})`;
+      c.fill();
+    }
+  }
+
+  for (let i = 0; i < 8; i++) bullets.push(new Bullet());
+  for (let i = 0; i < 15; i++) smokeP.push(new Smoke());
+
+  function animate() {
+    ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+    frameCount++;
+
+    bullets.forEach(b => { b.update(); b.draw(ctx2d); });
+    if (frameCount % 45 === 0 && bullets.length < 14) {
+      bullets.push(new Bullet());
+      if (Math.random() < 0.4) {
+        for (let i = 0; i < 3; i++) bullets.push(new Bullet());
+      }
+    }
+
+    if (frameCount % 8 === 0 && sparks.length < 60) sparks.push(new Spark(Math.random() * canvas.width, canvas.height + 5, 0.5));
+    sparks = sparks.filter(s => s.life > 0);
+    sparks.forEach(s => { s.update(); s.draw(ctx2d); });
+
+    if (frameCount % 40 === 0 && smokeP.length < 22) smokeP.push(new Smoke());
+    smokeP = smokeP.filter(s => s.life > 0);
+    smokeP.forEach(s => { s.update(); s.draw(ctx2d); });
+
+    if (frameCount % 3 === 0 && fireP.length < 40) fireP.push(new Fire());
+    fireP = fireP.filter(f => f.life > 0);
+    fireP.forEach(f => { f.update(); f.draw(ctx2d); });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  /* ============ EMBERS ============ */
+  const emberContainer = document.getElementById('emberContainer');
+  function spawnEmber() {
+    const ember = document.createElement('div');
+    ember.className = 'ember';
+    const x = Math.random() * window.innerWidth;
+    const dur = 4 + Math.random() * 6;
+    ember.style.left = `${x}px`;
+    ember.style.bottom = '-5px';
+    ember.style.animationDuration = `${dur}s`;
+    ember.style.width = `${2 + Math.random() * 3}px`;
+    ember.style.height = ember.style.width;
+    const hue = Math.random() > 0.5 ? 20 : 35;
+    ember.style.background = `hsl(${hue}, 100%, ${50 + Math.random() * 20}%)`;
+    ember.style.boxShadow = `0 0 ${4 + Math.random() * 4}px 1px rgba(255,${60 + Math.random() * 60},0,0.6)`;
+    emberContainer.appendChild(ember);
+    setTimeout(() => ember.remove(), dur * 1000);
+  }
+  setInterval(spawnEmber, 280);
+
+  /* ============ DRIFT SMOKE ============ */
+  const driftBox = document.getElementById('driftSmokeContainer');
+  function spawnDriftSmoke() {
+    const s = document.createElement('div');
+    s.className = 'drift-smoke';
+    const size = 200 + Math.random() * 350;
+    const top = Math.random() * Math.max(100, window.innerHeight - 100);
+    const dur = 20 + Math.random() * 25;
+    const op = 0.25 + Math.random() * 0.35;
+    const dark = Math.random() < 0.5;
+    s.style.width = `${size}px`;
+    s.style.height = `${size}px`;
+    s.style.top = `${top}px`;
+    s.style.left = '0px';
+    s.style.setProperty('--max-op', op.toFixed(2));
+    s.style.background = dark
+      ? 'radial-gradient(circle at 40% 40%, rgba(80,65,50,0.6), rgba(40,30,25,0.4) 50%, transparent 75%)'
+      : 'radial-gradient(circle at 40% 40%, rgba(120,100,80,0.5), rgba(70,55,45,0.3) 50%, transparent 75%)';
+    s.style.animation = `driftAcross ${dur}s linear forwards`;
+    driftBox.appendChild(s);
+    setTimeout(() => s.remove(), dur * 1000);
+  }
+  for (let i = 0; i < 3; i++) setTimeout(spawnDriftSmoke, i * 4000);
+  setInterval(spawnDriftSmoke, 5500);
+
+  /* ============ CLICK BURST ============ */
+  function spawnImpactBurst(x, y) {
+    const burst = document.createElement('div');
+    burst.className = 'impact-burst';
+    burst.style.left = `${x}px`;
+    burst.style.top = `${y}px`;
+
+    const sparkCount = 8 + Math.floor(Math.random() * 5);
+    for (let i = 0; i < sparkCount; i++) {
+      const spark = document.createElement('span');
+      spark.className = 'impact-spark';
+      spark.style.setProperty('--spark-angle', `${(360 / sparkCount) * i + Math.random() * 12}deg`);
+      spark.style.setProperty('--spark-distance', `${38 + Math.random() * 26}px`);
+      burst.appendChild(spark);
+    }
+
+    document.body.appendChild(burst);
+    setTimeout(() => burst.remove(), 650);
+
+    const sparkParticles = 14 + Math.floor(Math.random() * 10);
+    for (let i = 0; i < sparkParticles; i++) {
+      sparks.push(new Spark(x, y, 1.3));
+    }
+
+    triggerFlash(x, y, 0.9);
+    triggerAppShake();
+  }
+
+  let lastClickBlast = 0;
+  document.addEventListener('click', e => {
+    const now = performance.now();
+    if (now - lastClickBlast < 70) return;
+    lastClickBlast = now;
+    playClickBlast(1);
+    spawnImpactBurst(e.clientX, e.clientY);
+    crosshair.classList.add('firing');
+    setTimeout(() => crosshair.classList.remove('firing'), 120);
+  }, true);
+
+  /* ============ POINTER TRACKING ============ */
+  const crosshair = document.getElementById('crosshair');
+  const pointerGlow = document.getElementById('pointerGlow');
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+  if (finePointer) {
+    crosshair.classList.add('visible');
+    document.addEventListener('mousemove', e => {
+      crosshair.style.left = `${e.clientX}px`;
+      crosshair.style.top = `${e.clientY}px`;
+      pointerGlow.style.left = `${e.clientX}px`;
+      pointerGlow.style.top = `${e.clientY}px`;
+    });
+
+    document.addEventListener('mouseleave', () => crosshair.classList.remove('visible'));
+    document.addEventListener('mouseenter', () => crosshair.classList.add('visible'));
+
+    const hoverSelector = 'button, .card, .part-btn, .action-btn, .audio-btn, .dot, .stat, .tl-step, .tag';
+    document.addEventListener('mouseover', e => {
+      if (e.target.closest(hoverSelector)) crosshair.classList.add('active');
+    });
+    document.addEventListener('mouseout', e => {
+      if (e.target.closest(hoverSelector)) crosshair.classList.remove('active');
+    });
+  } else {
+    pointerGlow.style.display = 'none';
+    crosshair.style.display = 'none';
+  }
+
+  /* ============ TILT / HOVER FLOAT ============ */
+  function bindTiltEffects() {
+    const items = document.querySelectorAll('.tilt-item');
+    items.forEach(item => {
+      item.addEventListener('mousemove', e => {
+        const rect = item.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+        const ry = (px - 0.5) * 8;
+        const rx = (0.5 - py) * 8;
+        const lift = item.classList.contains('part-btn') ? -10 : -7;
+        const scale = item.classList.contains('audio-btn') ? 1.12 : 1.02;
+        item.style.transform = `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(${lift}px) scale(${scale})`;
+      });
+      item.addEventListener('mouseleave', () => {
+        item.style.transform = '';
+      });
+    });
+  }
+  bindTiltEffects();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9fbb39c7c93ec764',t:'MTc3ODc3NTU3OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
