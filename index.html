@@ -66,33 +66,40 @@
     border-radius: 50%;
     pointer-events: none;
     z-index: 18;
-    transform: translate(-50%, -50%);
+    transform: translate3d(var(--pointer-glow-x, -200px), var(--pointer-glow-y, -200px), 0) translate(-50%, -50%);
     background: radial-gradient(circle, rgba(255, 170, 80, 0.12) 0%, rgba(210, 70, 40, 0.08) 26%, rgba(0,0,0,0) 70%);
     mix-blend-mode: screen;
     opacity: 0.85;
     filter: blur(8px);
+    will-change: transform;
   }
 
   .cursor-crosshair {
     position: fixed;
     top: 0;
     left: 0;
-    width: 56px;
-    height: 56px;
-    transform: translate(-50%, -50%) scale(var(--crosshair-scale, 1));
+    transform: translate3d(var(--pointer-x, -120px), var(--pointer-y, -120px), 0);
     pointer-events: none;
     z-index: 2001;
     opacity: 0;
-    transition: opacity 0.18s ease, transform 0.12s ease;
-    mix-blend-mode: screen;
+    transition: opacity 0.18s ease;
+    will-change: transform, opacity;
   }
 
   .cursor-crosshair.visible { opacity: 1; }
   .cursor-crosshair.active { --crosshair-scale: 1.18; }
   .cursor-crosshair.firing { --crosshair-scale: 1.35; }
 
-  .cursor-crosshair::before,
-  .cursor-crosshair::after {
+  .cursor-crosshair-visual {
+    width: 56px;
+    height: 56px;
+    transform: translate(-50%, -50%) scale(var(--crosshair-scale, 1));
+    transition: transform 0.08s ease-out;
+    mix-blend-mode: screen;
+  }
+
+  .cursor-crosshair-visual::before,
+  .cursor-crosshair-visual::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -101,18 +108,18 @@
     box-shadow: 0 0 10px rgba(255, 128, 80, 0.5), inset 0 0 10px rgba(255, 180, 100, 0.22);
   }
 
-  .cursor-crosshair::after {
+  .cursor-crosshair-visual::after {
     inset: 9px;
     border-color: rgba(255, 110, 70, 0.75);
   }
 
-  .cursor-crosshair .cross-line {
+  .cursor-crosshair-visual .cross-line {
     position: absolute;
     background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255, 214, 153, 0.95), rgba(255,255,255,0.05));
     box-shadow: 0 0 8px rgba(255, 160, 80, 0.45);
   }
 
-  .cursor-crosshair .cross-line.h {
+  .cursor-crosshair-visual .cross-line.h {
     top: 50%;
     left: 6px;
     right: 6px;
@@ -120,7 +127,7 @@
     transform: translateY(-50%);
   }
 
-  .cursor-crosshair .cross-line.v {
+  .cursor-crosshair-visual .cross-line.v {
     left: 50%;
     top: 6px;
     bottom: 6px;
@@ -128,7 +135,7 @@
     transform: translateX(-50%);
   }
 
-  .cursor-crosshair .center-dot {
+  .cursor-crosshair-visual .center-dot {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -138,6 +145,182 @@
     border-radius: 50%;
     background: #fff0cc;
     box-shadow: 0 0 8px rgba(255, 190, 100, 0.8), 0 0 16px rgba(255, 92, 52, 0.45);
+  }
+
+  .battle-map-stage {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 12;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+
+  .battle-map-stage.visible { opacity: 1; }
+
+  .battle-map-stage::before {
+    content: "";
+    position: absolute;
+    right: 4vw;
+    top: 11vh;
+    width: min(30vw, 460px);
+    height: min(48vh, 430px);
+    background:
+      radial-gradient(circle at center, rgba(214, 175, 88, 0.14), rgba(214, 175, 88, 0.04) 42%, transparent 76%),
+      linear-gradient(160deg, rgba(196, 168, 96, 0.08), rgba(0,0,0,0));
+    filter: blur(10px);
+    transform: scale(var(--battle-map-stage-scale, 0.96));
+    transition: transform 0.55s ease;
+  }
+
+  .battle-map-stage.transitioning {
+    --battle-map-stage-scale: 1.03;
+  }
+
+  .battle-map-card {
+    position: absolute;
+    right: clamp(24px, 5vw, 70px);
+    top: clamp(84px, 15vh, 140px);
+    width: min(31vw, 470px);
+    min-width: 300px;
+    padding: 24px 24px 28px;
+    border: 1px solid rgba(232, 216, 168, 0.3);
+    background:
+      linear-gradient(160deg, rgba(26, 20, 15, 0.8), rgba(8, 6, 4, 0.36)),
+      radial-gradient(circle at top, rgba(196, 168, 96, 0.12), transparent 62%);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3), inset 0 0 24px rgba(196, 168, 96, 0.08);
+    backdrop-filter: blur(4px);
+  }
+
+  .battle-map-stage.transitioning .battle-map-card {
+    animation: battleMapReveal 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes battleMapReveal {
+    0% { opacity: 0; transform: translate3d(28px, 18px, 0) scale(0.94); filter: blur(10px); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); filter: blur(0); }
+  }
+
+  .battle-map-kicker {
+    color: rgba(232, 216, 168, 0.68);
+    font-size: 12px;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .battle-map-title {
+    color: var(--gold-light);
+    font-family: "STZhongsong", "SimSun", "Noto Serif SC", serif;
+    font-size: clamp(19px, 1.7vw, 26px);
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+  }
+
+  .battle-map-subtitle {
+    color: rgba(245, 240, 224, 0.72);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .battle-map-provinces {
+    position: relative;
+    min-height: 250px;
+  }
+
+  .province-cluster {
+    --block-size: 36px;
+    --block-gap: 5px;
+    position: absolute;
+    left: var(--cluster-x, 0px);
+    top: var(--cluster-y, 0px);
+    width: calc(var(--cols, 7) * (var(--block-size) + var(--block-gap)));
+    height: calc(var(--rows, 7) * (var(--block-size) + var(--block-gap)));
+    filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.35));
+  }
+
+  .province-cluster[data-size="small"] {
+    --block-size: 24px;
+    --block-gap: 4px;
+  }
+
+  .province-label {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 18px);
+    color: rgba(232, 216, 168, 0.82);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+  }
+
+  .province-block {
+    position: absolute;
+    width: var(--block-size);
+    height: var(--block-size);
+    left: calc(var(--col) * (var(--block-size) + var(--block-gap)));
+    top: calc(var(--row) * (var(--block-size) + var(--block-gap)));
+    transform: translateY(calc(var(--elev, 0) * -4px));
+    background: linear-gradient(155deg, rgba(247, 223, 170, 0.32), rgba(144, 97, 46, 0.42));
+    border: 1px solid rgba(238, 214, 157, 0.92);
+    box-shadow: 0 0 10px rgba(235, 192, 94, 0.28);
+  }
+
+  .province-block::before,
+  .province-block::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .province-block::before {
+    top: 100%;
+    left: -1px;
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(180deg, rgba(122, 76, 38, 0.7), rgba(49, 28, 14, 0.16));
+    border-left: 1px solid rgba(238, 214, 157, 0.24);
+    border-right: 1px solid rgba(238, 214, 157, 0.2);
+    transform: skewX(-45deg);
+    transform-origin: top left;
+  }
+
+  .province-block::after {
+    top: -1px;
+    left: 100%;
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(165, 111, 56, 0.54), rgba(83, 52, 22, 0.12));
+    border-top: 1px solid rgba(238, 214, 157, 0.28);
+    border-bottom: 1px solid rgba(238, 214, 157, 0.18);
+    transform: skewY(-45deg);
+    transform-origin: top left;
+  }
+
+  .province-block[data-hotspot="true"] {
+    background: linear-gradient(155deg, rgba(255, 244, 211, 0.5), rgba(202, 76, 42, 0.62));
+    border-color: rgba(255, 224, 173, 0.98);
+    box-shadow: 0 0 16px rgba(255, 126, 76, 0.4), 0 0 28px rgba(233, 188, 91, 0.26);
+  }
+
+  .province-cluster::after {
+    content: "";
+    position: absolute;
+    inset: -18px -24px -28px -24px;
+    border: 1px solid rgba(232, 216, 168, 0.08);
+    background: radial-gradient(circle at center, rgba(196, 168, 96, 0.12), transparent 70%);
+    opacity: 0.9;
+  }
+
+  .battle-map-stage.transitioning .province-block {
+    animation: provinceBlockRise 0.72s cubic-bezier(0.2, 1, 0.22, 1) backwards;
+    animation-delay: calc((var(--col) + var(--row)) * 34ms);
+  }
+
+  @keyframes provinceBlockRise {
+    0% { opacity: 0; transform: translateY(28px) scale(0.9); }
+    100% { opacity: 1; transform: translateY(calc(var(--elev, 0) * -4px)) scale(1); }
   }
 
   .impact-burst {
@@ -931,9 +1114,19 @@
 <div class="vignette"></div>
 <div class="pointer-glow" id="pointerGlow" aria-hidden="true"></div>
 <div class="cursor-crosshair" id="crosshair" aria-hidden="true">
-  <span class="cross-line h"></span>
-  <span class="cross-line v"></span>
-  <span class="center-dot"></span>
+  <div class="cursor-crosshair-visual">
+    <span class="cross-line h"></span>
+    <span class="cross-line v"></span>
+    <span class="center-dot"></span>
+  </div>
+</div>
+<div class="battle-map-stage" id="battleMapStage" aria-hidden="true">
+  <div class="battle-map-card">
+    <div class="battle-map-kicker" id="battleMapKicker">战役发生地</div>
+    <div class="battle-map-title" id="battleMapTitle"></div>
+    <div class="battle-map-subtitle" id="battleMapSubtitle"></div>
+    <div class="battle-map-provinces" id="battleMapProvinces"></div>
+  </div>
 </div>
 <div id="emberContainer"></div>
 <div id="driftSmokeContainer"></div>
@@ -1428,18 +1621,196 @@
     app.classList.add('shake');
   }
 
+  const battleMapStage = document.getElementById('battleMapStage');
+  const battleMapKicker = document.getElementById('battleMapKicker');
+  const battleMapTitle = document.getElementById('battleMapTitle');
+  const battleMapSubtitle = document.getElementById('battleMapSubtitle');
+  const battleMapProvinces = document.getElementById('battleMapProvinces');
+  let battleMapAnimationTimer = null;
+
+  const battleMapConfigs = {
+    part3: {
+      kicker: '战役发生地',
+      title: '山东 · 孟良崮战役',
+      subtitle: '沂蒙山区的山地合围战，在山东腹地打碎了整编第 74 师的锋芒。',
+      provinces: [
+        {
+          name: '山东',
+          offsetX: 24,
+          offsetY: 14,
+          cols: 7,
+          rows: 7,
+          blocks: [
+            [2,0,1],[3,0,1],[4,0,1],
+            [1,1,1],[2,1,1],[3,1,2],[4,1,1],[5,1,1],
+            [1,2,1],[2,2,1],[3,2,2],[4,2,1],[5,2,1],
+            [0,3,1],[1,3,1],[2,3,2],[3,3,3],[4,3,2],[5,3,1],
+            [1,4,1],[2,4,2],[3,4,3],[4,4,2],[5,4,1],
+            [2,5,1],[3,5,2],[4,5,2],
+            [4,6,1]
+          ],
+          hotspots: [[4,3],[3,4]]
+        }
+      ]
+    },
+    part4: {
+      kicker: '战役发生地',
+      title: '辽宁 · 辽沈战役',
+      subtitle: '锦州、塔山、黑山一线构成东北决战的门闩，破门之后全局逆转。',
+      provinces: [
+        {
+          name: '辽宁',
+          offsetX: 14,
+          offsetY: 12,
+          cols: 8,
+          rows: 8,
+          blocks: [
+            [2,0,1],[3,0,1],[4,0,1],[5,0,1],
+            [1,1,1],[2,1,1],[3,1,2],[4,1,2],[5,1,1],[6,1,1],
+            [0,2,1],[1,2,1],[2,2,2],[3,2,2],[4,2,2],[5,2,1],[6,2,1],
+            [0,3,1],[1,3,1],[2,3,2],[3,3,3],[4,3,2],[5,3,2],
+            [1,4,1],[2,4,1],[3,4,2],[4,4,2],[5,4,1],
+            [2,5,1],[3,5,2],[4,5,2],
+            [3,6,1],[4,6,1],
+            [4,7,1]
+          ],
+          hotspots: [[1,4],[2,5],[3,5]]
+        }
+      ]
+    },
+    part5: {
+      kicker: '三大战役版图',
+      title: '辽宁 · 山东 · 华东中原',
+      subtitle: '把战役放回省域空间，就能更直观看见从东北到华东再到华北的战略推进轨迹。',
+      provinces: [
+        {
+          name: '辽宁',
+          offsetX: 0,
+          offsetY: 26,
+          cols: 8,
+          rows: 8,
+          size: 'small',
+          blocks: [
+            [2,0,1],[3,0,1],[4,0,1],[5,0,1],
+            [1,1,1],[2,1,1],[3,1,2],[4,1,2],[5,1,1],[6,1,1],
+            [0,2,1],[1,2,1],[2,2,2],[3,2,2],[4,2,2],[5,2,1],[6,2,1],
+            [0,3,1],[1,3,1],[2,3,2],[3,3,3],[4,3,2],[5,3,2],
+            [1,4,1],[2,4,1],[3,4,2],[4,4,2],[5,4,1],
+            [2,5,1],[3,5,2],[4,5,2],[3,6,1],[4,6,1],[4,7,1]
+          ],
+          hotspots: [[1,4],[2,5]]
+        },
+        {
+          name: '山东',
+          offsetX: 124,
+          offsetY: 88,
+          cols: 7,
+          rows: 7,
+          size: 'small',
+          blocks: [
+            [2,0,1],[3,0,1],[4,0,1],
+            [1,1,1],[2,1,1],[3,1,2],[4,1,1],[5,1,1],
+            [1,2,1],[2,2,1],[3,2,2],[4,2,1],[5,2,1],
+            [0,3,1],[1,3,1],[2,3,2],[3,3,3],[4,3,2],[5,3,1],
+            [1,4,1],[2,4,2],[3,4,3],[4,4,2],[5,4,1],
+            [2,5,1],[3,5,2],[4,5,2],[4,6,1]
+          ],
+          hotspots: [[4,3],[3,4]]
+        },
+        {
+          name: '华东中原',
+          offsetX: 248,
+          offsetY: 54,
+          cols: 6,
+          rows: 8,
+          size: 'small',
+          blocks: [
+            [2,0,1],[3,0,1],
+            [1,1,1],[2,1,1],[3,1,1],[4,1,1],
+            [1,2,1],[2,2,2],[3,2,2],[4,2,1],
+            [0,3,1],[1,3,1],[2,3,2],[3,3,2],[4,3,1],
+            [1,4,1],[2,4,2],[3,4,2],[4,4,1],
+            [1,5,1],[2,5,1],[3,5,1],
+            [2,6,1],[3,6,1],
+            [2,7,1]
+          ],
+          hotspots: [[2,3],[3,4]]
+        }
+      ]
+    }
+  };
+
+  function renderProvinceCluster(province) {
+    const cluster = document.createElement('div');
+    cluster.className = 'province-cluster';
+    cluster.style.setProperty('--cluster-x', `${province.offsetX}px`);
+    cluster.style.setProperty('--cluster-y', `${province.offsetY}px`);
+    cluster.style.setProperty('--cols', province.cols);
+    cluster.style.setProperty('--rows', province.rows);
+    if (province.size) cluster.dataset.size = province.size;
+
+    const hotspotSet = new Set((province.hotspots || []).map(([col, row]) => `${col},${row}`));
+    province.blocks.forEach(([col, row, elev = 0]) => {
+      const block = document.createElement('span');
+      block.className = 'province-block';
+      block.style.setProperty('--col', col);
+      block.style.setProperty('--row', row);
+      block.style.setProperty('--elev', elev);
+      if (hotspotSet.has(`${col},${row}`)) block.dataset.hotspot = 'true';
+      cluster.appendChild(block);
+    });
+
+    const label = document.createElement('div');
+    label.className = 'province-label';
+    label.textContent = province.name;
+    cluster.appendChild(label);
+    return cluster;
+  }
+
+  function updateBattleMap(screenId, { animate = false } = {}) {
+    const config = battleMapConfigs[screenId];
+    if (battleMapAnimationTimer) {
+      clearTimeout(battleMapAnimationTimer);
+      battleMapAnimationTimer = null;
+    }
+    battleMapStage.classList.remove('visible', 'transitioning');
+    if (!config) {
+      battleMapProvinces.innerHTML = '';
+      return;
+    }
+
+    battleMapKicker.textContent = config.kicker;
+    battleMapTitle.textContent = config.title;
+    battleMapSubtitle.textContent = config.subtitle;
+    battleMapProvinces.innerHTML = '';
+    config.provinces.forEach(province => battleMapProvinces.appendChild(renderProvinceCluster(province)));
+
+    requestAnimationFrame(() => {
+      battleMapStage.classList.add('visible');
+      if (animate) {
+        battleMapStage.classList.add('transitioning');
+        battleMapAnimationTimer = setTimeout(() => {
+          battleMapStage.classList.remove('transitioning');
+          battleMapAnimationTimer = null;
+        }, 820);
+      }
+    });
+  }
+
   function showScreen(id, options = {}) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(id);
     if (target) target.classList.add('active');
     currentScreen = id;
     buildDots();
+    updateBattleMap(id, { animate: true });
     triggerFlash(window.innerWidth / 2, window.innerHeight * 0.42, 0.7);
     triggerAppShake();
     if (options.keyboard) playClickBlast(0.6);
   }
 
   buildDots();
+  updateBattleMap(currentScreen);
 
   document.addEventListener('keydown', e => {
     const idx = screenIds.indexOf(currentScreen);
@@ -2064,15 +2435,40 @@
 
   if (finePointer) {
     crosshair.classList.add('visible');
-    document.addEventListener('mousemove', e => {
-      crosshair.style.left = `${e.clientX}px`;
-      crosshair.style.top = `${e.clientY}px`;
-      pointerGlow.style.left = `${e.clientX}px`;
-      pointerGlow.style.top = `${e.clientY}px`;
-    });
+    let pointerX = window.innerWidth / 2;
+    let pointerY = window.innerHeight / 2;
+    let pointerFrame = null;
+
+    const syncPointerEffects = () => {
+      crosshair.style.setProperty('--pointer-x', `${pointerX}px`);
+      crosshair.style.setProperty('--pointer-y', `${pointerY}px`);
+      pointerGlow.style.setProperty('--pointer-glow-x', `${pointerX}px`);
+      pointerGlow.style.setProperty('--pointer-glow-y', `${pointerY}px`);
+      pointerFrame = null;
+    };
+
+    const queuePointerSync = () => {
+      if (pointerFrame !== null) return;
+      pointerFrame = requestAnimationFrame(syncPointerEffects);
+    };
+
+    syncPointerEffects();
+    document.addEventListener('pointermove', e => {
+      if (e.pointerType && e.pointerType !== 'mouse') return;
+      pointerX = e.clientX;
+      pointerY = e.clientY;
+      queuePointerSync();
+    }, { passive: true });
 
     document.addEventListener('mouseleave', () => crosshair.classList.remove('visible'));
-    document.addEventListener('mouseenter', () => crosshair.classList.add('visible'));
+    document.addEventListener('mouseenter', e => {
+      crosshair.classList.add('visible');
+      if (typeof e.clientX === 'number' && typeof e.clientY === 'number') {
+        pointerX = e.clientX;
+        pointerY = e.clientY;
+        queuePointerSync();
+      }
+    });
 
     const hoverSelector = 'button, .card, .part-btn, .action-btn, .audio-btn, .dot, .stat, .tl-step, .tag';
     document.addEventListener('mouseover', e => {
